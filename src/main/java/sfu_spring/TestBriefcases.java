@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestBriefcases {
     public static void main(String[] args) {
-        ApplicationContext context =
+        ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("applicationContent.xml");
         Briefcase briefcaseCloth = context.getBean("briefcaseClothBean", Briefcase.class);
         briefcaseCloth.getMaterial().echoPropertiesMaterial();
