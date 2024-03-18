@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+    <!-- Используем ресурсы класса для указания файлов свойств -->
+    <context:property-placeholder location="classpath:materials.properties,
+                                            classpath:leather_technologies.properties"/>
+
+    <bean id="clothBean"
+          class="sfu_spring.materials.Cloth">
+        <!-- Используем сеттеры класса для ввода значений свойствам класса -->
+        <property name="name" value="${cloth.description}"/>
+        <property name="fiberContent" value="${cloth.fiberContent}"/>
+        <property name="durability" value="0.4"/>
+    </bean>
+    <bean id="leatherBean"
+          class="sfu_spring.materials.Leather">
+        <!-- Можно также и ввести значения из внешнего properties файла передавать в конструктор класса -->
+        <constructor-arg name="name" value="${leather.description}"/>
+        <!-- Неэкономный в плане времени, но вполне возможный вариант передачи значение через конструктор класса свойства-коллекции -->
+        <constructor-arg name="technologiesCreateLeather">
+            <list>
+                <value>${leather.tech.0}</value>
+                <value>${leather.tech.1}</value>
+                <value>${leather.tech.2}</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="stability" value="0.9"/>
+        <constructor-arg name="toughness" value="${leather.toughness}"/>
+    </bean>
+    <bean id="briefcaseClothBean"
+          class="sfu_spring.Briefcase">
+        <!-- Внедрение зависимости по ссылке через конструктор, передается ссылка на другой bean clothBean -->
+        <constructor-arg ref="clothBean"/>
+    </bean>
+    <bean id="briefcaseLeatherBean"
+          class="sfu_spring.Briefcase">
+        <constructor-arg ref="leatherBean"/>
+    </bean>
+</beans>
